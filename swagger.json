@@ -1,0 +1,117 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Adobe Sign"
+  },
+  "host": "api.na1.echosign.com",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/rest/v5/agreements": {
+      "get": {
+        "description": "Retrieves agreements for the user.",
+        "operationId": "retrieveAgreements",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "type": "string",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/rest/v5/agreements/{agreementId}": {
+      "get": {
+        "description": "Retrieves the latest status of an agreement.",
+        "operationId": "retrieveAgreement",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "agreementId",
+            "type": "string",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/rest/v5/agreements/{agreementId}/auditTrail": {
+      "get": {
+        "description": "Retrieves the audit trail of an agreement identified by agreementid.",
+        "operationId": "agreementAuditTrail",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "agreementId",
+            "type": "string",
+            "in": "path",
+            "required": true
+          }
+        ],
+"responses": {
+  "200": {
+    "description": "Status 200",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    }
+  }
+}
+      }
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  }
+}
