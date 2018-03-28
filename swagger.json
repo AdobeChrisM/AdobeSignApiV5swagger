@@ -92,20 +92,20 @@
             "required": true
           }
         ],
-"responses": {
-  "200": {
-    "description": "Status 200",
-    "schema": {
-      "type": "object",
-      "properties": {
-        "file": {
-          "type": "string",
-          "format": "byte"
+"responses" : {
+          "200": {
+            "description": "OK",
+            "schema" : {
+              "type": "object",
+              "properties": {
+                "content" : {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
         }
-      }
-    }
-  }
-}
       }
     }
   },

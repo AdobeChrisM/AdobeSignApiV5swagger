@@ -1,0 +1,2946 @@
+{
+	"models": {
+		"InteractiveOptions": {
+			"id": "InteractiveOptions",
+			"properties": {
+				"authoringRequested": {
+					"description": "Indicates that authoring is requested prior to sending the document",
+					"type": "boolean",
+					"required": false
+				},
+				"autoLoginUser": {
+					"description": "If user settings allow, automatically logs the user in",
+					"type": "boolean",
+					"required": false
+				},
+				"noChrome": {
+					"description": "Turn off Chrome for the URL generated",
+					"type": "boolean",
+					"required": false
+				},
+				"sendThroughWeb": {
+					"description": "A url to send page will be returned from where the agreement creation needs to be completed. All the parameters provided here will be retained in the send page",
+					"type": "boolean",
+					"required": false
+				},
+				"sendThroughWebOptions": {
+					"description": "A JSON object of Type SendThroughWebOptions to customize the sendPage. This one will apply only if sendThroughWeb is set to true",
+					"type": "SendThroughWebOptions",
+					"items": {
+						"$ref": "SendThroughWebOptions"
+					},
+					"required": false
+				},
+				"locale": {
+					"description": "The locale in which page returned by this API should be shown in - for example, en_US or fr_FR. In case locale provided by client is not available or no locale is specified, page will be shown in the default language set in the user account",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"UserAgreement": {
+			"id": "UserAgreement",
+			"properties": {
+				"displayDate": {
+					"description": "The display date for the agreement",
+					"type": "date",
+					"required": true
+				},
+				"esign": {
+					"description": "True if this is an e-sign document",
+					"type": "boolean",
+					"required": true
+				},
+				"displayUserSetInfos": {
+					"description": "The most relevant current user set for the agreement. It is typically the next signer if the agreement is from the current user, or the sender if received from another user",
+					"type": "array",
+					"items": {
+						"$ref": "DisplayUserSetInfo"
+					},
+					"required": true
+				},
+				"agreementId": {
+					"description": "The unique identifier of the agreement",
+					"type": "string",
+					"required": true
+				},
+				"name": {
+					"description": "Name of the Agreement",
+					"type": "string",
+					"required": true
+				},
+				"latestVersionId": {
+					"description": "A version ID which uniquely identifies the current version of the agreement",
+					"type": "string",
+					"required": true
+				},
+				"status": {
+					"description": "The current status of the document from the perspective of the user",
+					"type": "string",
+					"required": true,
+					"enum": ["WAITING_FOR_MY_SIGNATURE", "WAITING_FOR_MY_APPROVAL", "WAITING_FOR_MY_DELEGATION", "WAITING_FOR_MY_ACKNOWLEDGEMENT", "WAITING_FOR_MY_ACCEPTANCE", "WAITING_FOR_MY_FORM_FILLING", "OUT_FOR_SIGNATURE", "OUT_FOR_APPROVAL", "OUT_FOR_DELIVERY", "OUT_FOR_ACCEPTANCE", "OUT_FOR_FORM_FILLING", "SIGNED", "APPROVED", "DELIVERED", "ACCEPTED", "FORM_FILLED", "RECALLED", "WAITING_FOR_FAXIN", "ARCHIVED", "FORM", "EXPIRED", "WIDGET", "WAITING_FOR_AUTHORING", "OTHER"]
+				}
+			}
+		},
+		"AgreementInfo": {
+			"id": "AgreementInfo",
+			"properties": {
+				"signatureType": {
+					"description": "Specifies the type of signature you would like to request - written or e-signature. The possible values are ESIGN or WRITTEN",
+					"type": "string",
+					"required": true,
+					"enum": ["ESIGN : Agreement needs to be signed electronically <br>", "WRITTEN : Agreement will be signed using handwritten signature and signed document will be uploaded into the system <br>"]
+				},
+				"externalId": {
+					"description": "An arbitrary value from your system, which can be specified at sending time and then later returned or queried",
+					"type": "ExternalId",
+					"items": {
+						"$ref": "ExternalId"
+					},
+					"required": false
+				},
+				"latestVersionId": {
+					"description": "An ID which uniquely identifies the current version of the document",
+					"type": "string",
+					"required": true
+				},
+				"locale": {
+					"description": "The locale associated with this agreement - for example, en_US or fr_FR",
+					"type": "string",
+					"required": true
+				},
+				"message": {
+					"description": "The message associated with the document that the sender has provided",
+					"type": "string",
+					"required": false
+				},
+				"securityOptions": {
+					"description": "Security information about the document that specifies whether or not a password is required to view and sign the document",
+					"type": "array",
+					"items": {
+						"type": "string",
+						"enum": ["OPEN_PROTECTED", "OTHER"]
+					},
+					"required": false
+				},
+				"nextParticipantSetInfos": {
+					"description": "Information about who needs to act next for this document - for example, if the agreement is in status OUT_FOR_SIGNATURE or OUT_FOR_APPROVAL, this will be the next signer or approver. If the AgreementStatus is a terminal state, this array is empty",
+					"type": "array",
+					"items": {
+						"$ref": "NextParticipantSetInfo"
+					},
+					"required": true
+				},
+				"participantSetInfos": {
+					"description": "Information about all the participant sets of this document",
+					"type": "array",
+					"items": {
+						"$ref": "ParticipantSetInfo"
+					},
+					"required": true
+				},
+				"agreementId": {
+					"description": "A resource identifier that can be used to uniquely identify the agreement resource in other apis",
+					"type": "string",
+					"required": true
+				},
+				"name": {
+					"description": "The name of the document, specified by the sender",
+					"type": "string",
+					"required": true
+				},
+				"vaultingEnabled": {
+					"description": "Whether vaulting was enabled for the agreement",
+					"type": "boolean",
+					"required": true
+				},
+				"expiration": {
+					"description": "The date after which the document can no longer be signed, if an expiration date is configured. The value is nil if an expiration date is not set for the document",
+					"type": "date",
+					"required": false
+				},
+				"modifiable": {
+					"description": "Information about whether the agreement can be modified",
+					"type": "boolean",
+					"required": true
+				},
+				"events": {
+					"description": "An ordered list of the events in the audit trail of this document",
+					"type": "array",
+					"items": {
+						"$ref": "DocumentHistoryEvent"
+					},
+					"required": true
+				},
+				"status": {
+					"description": "The current status of the document",
+					"type": "string",
+					"required": true,
+					"enum": ["OUT_FOR_SIGNATURE", "WAITING_FOR_REVIEW", "SIGNED", "APPROVED", "ACCEPTED", "DELIVERED", "FORM_FILLED", "ABORTED", "DOCUMENT_LIBRARY", "WIDGET", "EXPIRED", "ARCHIVED", "PREFILL", "AUTHORING", "WAITING_FOR_FAXIN", "WAITING_FOR_VERIFICATION", "WIDGET_WAITING_FOR_VERIFICATION", "WAITING_FOR_PAYMENT", "OUT_FOR_APPROVAL", "OUT_FOR_ACCEPTANCE", "OUT_FOR_DELIVERY", "OUT_FOR_FORM_FILLING", "OTHER"]
+				}
+			}
+		},
+		"AgreementStatusUpdateResponse": {
+			"id": "AgreementStatusUpdateResponse",
+			"properties": {
+				"result": {
+					"description": "A status value showing the result of this operation",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"PhoneInfo": {
+			"id": "PhoneInfo",
+			"properties": {
+				"phone": {
+					"description": "The phone number required for the recipient to view and sign the document if authentication type is PHONE",
+					"type": "string",
+					"required": true
+				},
+				"countryCode": {
+					"description": "The phoneInfo country code required for the recipient to view and sign the document if authentication type is PHONE",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"Document": {
+			"id": "Document",
+			"properties": {
+				"numPages": {
+					"description": "Number of pages in the document",
+					"type": "integer",
+					"required": true
+				},
+				"name": {
+					"description": "Name of the document",
+					"type": "string",
+					"required": true
+				},
+				"documentId": {
+					"description": "Id of the document",
+					"type": "string",
+					"required": true
+				},
+				"mimeType": {
+					"description": "Mime-type of the document",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"NextParticipantInfo": {
+			"id": "NextParticipantInfo",
+			"properties": {
+				"waitingSince": {
+					"description": "The date since which the document has been waiting for the participant to take action",
+					"type": "date",
+					"required": true
+				},
+				"name": {
+					"description": "The name of the next participant, if available",
+					"type": "string",
+					"required": false
+				},
+				"email": {
+					"description": "The email address of the next participant",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"AgreementCreationResponse": {
+			"description": "A JSON  that contains both the id of the newly created agreement and URL / embedded code to direct the user to tne next step in the creation process.",
+			"id": "AgreementCreationResponse",
+			"properties": {
+				"embeddedCode": {
+					"description": "Javascript snippet suitable for an embedded page taking a user to a URL",
+					"type": "string",
+					"required": false
+				},
+				"agreementId": {
+					"description": "The unique identifier that can be used to query status and download signed documents",
+					"type": "string",
+					"required": true
+				},
+				"expiration": {
+					"description": "Expiration date for autologin. This is based on the user setting, API_AUTO_LOGIN_LIFETIME",
+					"type": "date",
+					"required": false
+				},
+				"url": {
+					"description": "Standalone URL to direct end users to",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"AlternateParticipantInfo": {
+			"id": "AlternateParticipantInfo",
+			"properties": {
+				"phone": {
+					"description": "The phone number for the alternate participant",
+					"type": "string",
+					"required": false
+				},
+				"countryCode": {
+					"description": "The country code for the alternate participant",
+					"type": "string",
+					"required": false
+				},
+				"privateMessage": {
+					"description": "The private message for the alternate participant",
+					"type": "string",
+					"required": true
+				},
+				"email": {
+					"description": "The email of the alternate participant. This is required if fax is not provided. Both fax and email can not be provided",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"DeviceLocation": {
+			"id": "DeviceLocation",
+			"properties": {
+				"latitude": {
+					"description": "Latitude coordinate",
+					"type": "float",
+					"required": true
+				},
+				"longitude": {
+					"description": "Longitude coordinate",
+					"type": "float",
+					"required": true
+				}
+			}
+		},
+		"SupportingDocument": {
+			"id": "SupportingDocument",
+			"properties": {
+				"displayLabel": {
+					"description": "Display name of the document",
+					"type": "string",
+					"required": true
+				},
+				"numPages": {
+					"description": "Number of pages in the document",
+					"type": "int",
+					"required": true
+				},
+				"fieldName": {
+					"description": "The name of the supporting document field",
+					"type": "string",
+					"required": true
+				},
+				"supportingDocumentId": {
+					"description": "Id representing the document",
+					"type": "string",
+					"required": true
+				},
+				"mimeType": {
+					"description": "Mime-type of the document",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"ParticipantInfo": {
+			"id": "ParticipantInfo",
+			"properties": {
+				"participantId": {
+					"description": "The unique identifier of the participant",
+					"type": "string",
+					"required": true
+				},
+				"alternateParticipants": {
+					"description": "All the child participants of the current participant. The possible values for the status of these participants are, SHARE and DELEGATE",
+					"type": "array",
+					"items": {
+						"$ref": "ParticipantSetInfo"
+					},
+					"required": false
+				},
+				"name": {
+					"description": "The name of the participant, if available",
+					"type": "string",
+					"required": false
+				},
+				"company": {
+					"description": "The company of the participant, if available",
+					"type": "string",
+					"required": false
+				},
+				"title": {
+					"description": "The title of the participant, if available",
+					"type": "string",
+					"required": false
+				},
+				"securityOptions": {
+					"description": "Security options that apply to the participant",
+					"type": "array",
+					"items": {
+						"type": "string",
+						"enum": ["PASSWORD", "WEB_IDENTITY", "KBA", "PHONE", "OTHER"]
+					},
+					"required": false
+				},
+				"email": {
+					"description": "The email address of the participant",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"FileInfo": {
+			"id": "FileInfo",
+			"properties": {
+				"libraryDocumentName": {
+					"description": "The name of a library document that is available to the sender",
+					"type": "string",
+					"required": false
+				},
+				"transientDocumentId": {
+					"description": "The documentID as returned from the transient document creation API",
+					"showInSampleRequest": true,
+					"type": "string",
+					"required": false
+				},
+				"documentURL": {
+					"description": "File at a public URL location",
+					"type": "URLFileInfo",
+					"items": {
+						"$ref": "URLFileInfo"
+					},
+					"required": false
+				},
+				"libraryDocumentId": {
+					"description": "The ID for a library document that is available to the sender",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"MergefieldInfo": {
+			"id": "MergefieldInfo",
+			"properties": {
+				"fieldName": {
+					"description": "The name of the field",
+					"type": "string",
+					"required": false
+				},
+				"defaultValue": {
+					"description": "The default value of the field",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"SecurityOption": {
+			"id": "SecurityOption",
+			"properties": {
+				"kbaProtection": {
+					"description": "Signers need to pass Knowledge Based Authentication before they gain access to view and sign the document.",
+					"type": "string",
+					"required": false,
+					"enum": ["NONE", "EXTERNAL_USERS", "INTERNAL_USERS", "ALL_USERS"]
+				},
+				"passwordProtection": {
+					"description": "Specifies if signers are required to enter a password to have access to sign the document.",
+					"type": "string",
+					"required": false,
+					"enum": ["NONE", "EXTERNAL_USERS", "INTERNAL_USERS", "ALL_USERS"]
+				},
+				"webIdentityProtection": {
+					"description": "Specifies if signers are required to provide their web identity, before they gain access to view and sign the document.",
+					"type": "string",
+					"required": false,
+					"enum": ["NONE", "EXTERNAL_USERS", "INTERNAL_USERS", "ALL_USERS"]
+				},
+				"externalPassword": {
+					"description": "The secondary password that will be used to protect signing the document for external signers. Note that Adobe Sign will never show this password to anyone, so you will need to separately communicate it to any relevant parties. This password is applied only if password protection is specified for external signers or all signers",
+					"type": "string",
+					"required": false
+				},
+				"internalPassword": {
+					"description": "The secondary password that will be used to protect signing the document for internal signers. Note that Adobe Sign will never show this password to anyone, so you will need to separately communicate it to any relevant parties. This password is applied only if password protection is specified for internal signers or all signers",
+					"type": "string",
+					"required": false
+				},
+				"protectOpen": {
+					"description": "If set to true, the document is always be encrypted with this password every time it is sent by email. Recipients need to provide the password to be able to view the PDF files",
+					"type": "boolean",
+					"required": false
+				},
+				"openPassword": {
+					"description": "The secondary password that will be used to secure the PDF document. Note that Adobe Sign will never show this password to anyone, so you will need to separately communicate it to any relevant parties. This password is used only if protectOpen field is set to true",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"CombinedDocumentPagesInfo": {
+			"id": "CombinedDocumentPagesInfo",
+			"properties": {
+				"documentPagesInfo": {
+					"description": "List of basic information of all pages of the combined document of an Agreement.",
+					"type": "array",
+					"items": {
+						"$ref": "DocumentPageInfo"
+					},
+					"required": true
+				}
+			}
+		},
+		"SigningUrl": {
+			"id": "SigningUrl",
+			"properties": {
+				"esignUrl": {
+					"description": "The email address of the signer associated with this signing url",
+					"type": "string",
+					"required": true
+				},
+				"email": {
+					"description": "The email address of the signer associated with this signing url",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"DocumentCreationInfo": {
+			"id": "DocumentCreationInfo",
+			"properties": {
+				"mergeFieldInfo": {
+					"description": "Optional default values for fields to merge into the document. The values will be presented to the signers for editable fields; for read-only fields the provided values will not be editable during the signing process. Merging data into fields is currently not supported when used with libraryDocumentId or libraryDocumentName. Only file and url are currently supported",
+					"type": "array",
+					"items": {
+						"$ref": "MergefieldInfo"
+					},
+					"required": false
+				},
+				"recipientSetInfos": {
+					"description": "A list of one or more recipient sets. A recipient set may have one or more recipients. If any member of the recipient set signs, the agreement is considered signed by the recipient set. For regular (non-MegaSign) documents, there is no limit on the number of electronic signatures in a single document. Written signatures are limited to four per document. This limit includes the sender if the signature of the sender is also required. Note: If signatureFlow is set to SENDER_SIGNS_ONLY, this parameter is optional",
+					"type": "array",
+					"items": {
+						"$ref": "RecipientSetInfo"
+					},
+					"required": true
+				},
+				"callbackInfo": {
+					"description": "A publicly accessible url to which Adobe Sign will do an HTTP GET operation every time there is a new agreement event. HTTP authentication is supported using standard embedded syntax - i.e. http://username:password@your.server.com/path/to/file. Adobe Sign can also ping your system using HTTP PUT with the final signed PDF. Please contact support@echosign.com if you wish to use this option.",
+					"type": "string",
+					"required": false
+				},
+				"signatureType": {
+					"description": "Specifies the type of signature you would like to request - written or e-signature. The possible values are ESIGN or WRITTEN",
+					"type": "string",
+					"required": true,
+					"enum": ["ESIGN", "WRITTEN"]
+				},
+				"externalId": {
+					"description": "A unique identifier for your transaction from an external system. You can use the ExternalID to search for your transaction through API",
+					"type": "ExternalId",
+					"items": {
+						"$ref": "ExternalId"
+					},
+					"required": false
+				},
+				"locale": {
+					"description": "The locale associated with this agreement - specifies the language for the signing page and emails, for example en_US or fr_FR.  If none specified, defaults to the language configured for the agreement sender",
+					"type": "string",
+					"required": false
+				},
+				"message": {
+					"description": "An optional message to the recipients, describing what is being sent or why their signature is required",
+					"type": "string",
+					"required": false
+				},
+				"securityOptions": {
+					"description": "Sets optional secondary security parameters for your document",
+					"type": "SecurityOption",
+					"items": {
+						"$ref": "SecurityOption"
+					},
+					"required": false
+				},
+				"vaultingInfo": {
+					"description": "Sets the vaulting properties that allows Adobe Sign to securely store documents with a vault provider",
+					"type": "VaultingInfo",
+					"items": {
+						"$ref": "VaultingInfo"
+					},
+					"required": false
+				},
+				"reminderFrequency": {
+					"description": "Optional parameter that sets how often you want to send reminders to the recipients. The possible values are DAILY_UNTIL_SIGNED or WEEKLY_UNTIL_SIGNED",
+					"type": "string",
+					"required": false,
+					"enum": ["DAILY_UNTIL_SIGNED", "WEEKLY_UNTIL_SIGNED"]
+				},
+				"ccs": {
+					"description": "A list of one or more email addresses that you want to copy on this transaction. The email addresses will each receive an email at the beginning of the transaction and also when the final document is signed. The email addresses will also receive a copy of the document, attached as a PDF file",
+					"type": "array",
+					"items": {
+						"$ref": "string"
+					},
+					"required": false
+				},
+				"postSignOptions": {
+					"description": "URL and associated properties for the success page the user will be taken to after completing the signing process",
+					"type": "PostSignOptions",
+					"items": {
+						"$ref": "PostSignOptions"
+					},
+					"required": false
+				},
+				"signatureFlow": {
+					"description": "Selects the workflow you would like to use - whether the sender needs to sign only, before the recipient, after the recipient, or not at all. The possible values for this variable are SENDER_SIGNATURE_NOT_REQUIRED, SENDER_SIGNS_LAST, SENDER_SIGNS_FIRST, SEQUENTIAL, PARALLEL or SENDER_SIGNS_ONLY.  Note: leave unspecified for hybrid routing",
+					"showInSampleRequest": true,
+					"type": "string",
+					"required": false,
+					"enum": ["SENDER_SIGNATURE_NOT_REQUIRED", "SENDER_SIGNS_LAST", "SENDER_SIGNS_FIRST", "SEQUENTIAL", "PARALLEL", "SENDER_SIGNS_ONLY"]
+				},
+				"daysUntilSigningDeadline": {
+					"description": "The number of days that remain before the document expires. You cannot sign the document after it expires",
+					"type": "integer",
+					"required": false
+				},
+				"formFieldLayerTemplates": {
+					"description": "Specifies the form field layer template or source of form fields to apply on the files in this transaction. If specified, the FileInfo for this parameter must refer to a form field layer template via libraryDocumentId or libraryDocumentName, or if specified via transientDocumentId or documentURL, it must be of a supported file type. Note: Only one of the four parameters in every FileInfo object must be specified",
+					"type": "array",
+					"items": {
+						"$ref": "FileInfo"
+					},
+					"required": false
+				},
+				"name": {
+					"description": "The name of the agreement that will be used to identify it, in emails and on the website",
+					"type": "string",
+					"required": true
+				},
+				"fileInfos": {
+					"description": "A list of one or more files (or references to files) that will be sent out for signature. If more than one file is provided, they will be combined into one PDF before being sent out. Note: Only one of the four parameters in every FileInfo object must be specified",
+					"type": "array",
+					"items": {
+						"$ref": "FileInfo"
+					},
+					"required": true
+				},
+				"formFields": {
+					"description": "Information of form fields of an agreement. PDF_SIGNATURE inputType field is currently not supported",
+					"type": "array",
+					"items": {
+						"$ref": "RequestFormField"
+					},
+					"required": false
+				}
+			}
+		},
+		"RecipientSecurityOption": {
+			"id": "RecipientSecurityOption",
+			"properties": {
+				"password": {
+					"description": "The password required for the recipient to view and sign the document",
+					"type": "string",
+					"required": false
+				},
+				"authenticationMethod": {
+					"description": "The authentication method for the recipients to have access to view and sign the document",
+					"type": "string",
+					"required": true,
+					"enum": ["NONE", "INHERITED_FROM_DOCUMENT", "PASSWORD", "WEB_IDENTITY", "KBA", "PHONE", "ADOBE_SIGN"]
+				},
+				"phoneInfos": {
+					"description": "The phoneInfo required for the recipient to view and sign the document",
+					"type": "array",
+					"items": {
+						"$ref": "PhoneInfo"
+					},
+					"required": true
+				}
+			}
+		},
+		"VaultingInfo": {
+			"id": "VaultingInfo",
+			"properties": {
+				"enabled": {
+					"description": "For accounts set up for document vaulting and the option to enable per agreement, this determines whether the document is to be vaulted",
+					"type": "boolean",
+					"required": false
+				}
+			}
+		},
+		"NextParticipantSetInfo": {
+			"id": "NextParticipantSetInfo",
+			"properties": {
+				"nextParticipantSetName": {
+					"description": "The name of the next participant set. Returned only, if the API caller is the sender of agreement.",
+					"type": "string",
+					"required": false
+				},
+				"nextParticipantSetMemberInfos": {
+					"description": "Information about the members of the next participant set",
+					"type": "array",
+					"items": {
+						"$ref": "NextParticipantInfo"
+					},
+					"required": true
+				}
+			}
+		},
+		"PostSignOptions": {
+			"id": "PostSignOptions",
+			"properties": {
+				"redirectUrl": {
+					"description": "A publicly accessible url to which the user will be sent after successfully completing the signing process.",
+					"type": "string",
+					"required": true
+				},
+				"redirectDelay": {
+					"description": "The delay (in seconds) before the user is taken to the success page. If this value is greater than 0, the user will first see the standard Adobe Sign success message, and then after a delay will be redirected to your success page.",
+					"type": "integer",
+					"required": false
+				}
+			}
+		},
+		"FileUploadOptions": {
+			"id": "FileUploadOptions",
+			"properties": {
+				"localFile": {
+					"description": "Whether local file upload button should appear or not. Default value is taken as true",
+					"type": "boolean",
+					"required": false
+				},
+				"webConnectors": {
+					"description": "Whether link to attach documents from web sources like Dropbox should appear or not. Default value is taken as true",
+					"type": "boolean",
+					"required": false
+				},
+				"libraryDocument": {
+					"description": "Whether library documents link should appear or not. Default value is taken as true",
+					"type": "boolean",
+					"required": false
+				}
+			}
+		},
+		"ExternalId": {
+			"id": "ExternalId",
+			"properties": {
+				"namespace": {
+					"description": "Only supported value for the ExternalID namespace at this time is API_OTHER",
+					"type": "string",
+					"required": false
+				},
+				"id": {
+					"description": "An arbitrary value from your system, which can be specified at sending time and then later returned or queried",
+					"type": "string",
+					"required": false
+				},
+				"group": {
+					"description": "An arbitrary value from your system, which can be specified at sending time and then later returned or queried",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"AgreementStatusUpdateInfo": {
+			"id": "AgreementStatusUpdateInfo",
+			"properties": {
+				"notifySigner": {
+					"description": "Whether or not you would like the recipient to be notified that the transaction has been cancelled. The notification is mandatory if any party has already signed this document. The default value is false. In case the invoker is a signer, the flag has no effect.",
+					"type": "boolean",
+					"required": false
+				},
+				"comment": {
+					"description": "An optional comment describing to the recipient why you want to cancel the transaction.  Mandatory if the caller is a signer.",
+					"type": "string",
+					"required": false
+				},
+				"value": {
+					"description": "The state to which the agreement is to be updated. The only valid state for this variable is currently, CANCEL",
+					"type": "string",
+					"required": true,
+					"enum": ["CANCEL"]
+				}
+			}
+		},
+		"DocumentUrl": {
+			"id": "DocumentUrl",
+			"properties": {
+				"url": {
+					"description": "Secure URL of the document",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"FormFieldCondition": {
+			"id": "FormFieldCondition",
+			"properties": {
+				"whenFieldLocationIndex": {
+					"description": "Index of the location of the whenField whose value is the basis of the condition",
+					"type": "int",
+					"required": false
+				},
+				"value": {
+					"description": "Value to compare the value of the whenField with, to evaluate the condition",
+					"type": "string",
+					"required": false
+				},
+				"whenFieldName": {
+					"description": "Name of the field whose value is the basis of condition",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"FormFieldLocation": {
+			"id": "FormFieldLocation",
+			"properties": {
+				"pageNumber": {
+					"description": "Number of the page where form field has to be placed, starting from 1.",
+					"type": "int",
+					"required": true
+				},
+				"top": {
+					"description": "No. of pixels from bottom of the page for form field placement",
+					"type": "double",
+					"required": true
+				},
+				"left": {
+					"description": "No. of pixels from left of the page for form field placement",
+					"type": "double",
+					"required": true
+				},
+				"width": {
+					"description": "Width of the form field in pixels",
+					"type": "double",
+					"required": true
+				},
+				"height": {
+					"description": "Height of the form field in pixels",
+					"type": "double",
+					"required": true
+				}
+			}
+		},
+		"ImageUrl": {
+			"id": "ImageUrl",
+			"properties": {
+				"urls": {
+					"description": "An ordered list of image urls (one per page).",
+					"type": "array",
+					"items": {
+						"$ref": "string"
+					},
+					"required": true
+				},
+				"imagesAvailable": {
+					"description": "true if images for the associated image size is available, else false.",
+					"type": "boolean",
+					"required": false
+				},
+				"imageSize": {
+					"description": "ImageSize corresponding to the imageUrl returned ",
+					"type": "string",
+					"required": false,
+					"enum": ["FIXED_WIDTH_50px", "FIXED_WIDTH_250px", "FIXED_WIDTH_675px", "ZOOM_50_PERCENT", "ZOOM_75_PERCENT", "ZOOM_100_PERCENT", "ZOOM_125_PERCENT", "ZOOM_150_PERCENT", "ZOOM_200_PERCENT"]
+				}
+			}
+		},
+		"SigningUrlResponse": {
+			"id": "SigningUrlResponse",
+			"properties": {
+				"signingUrlSetInfos": {
+					"description": "An array of urls for signer sets involved in this agreement.",
+					"type": "array",
+					"items": {
+						"$ref": "SigningUrlSetInfo"
+					},
+					"required": true
+				}
+			}
+		},
+		"SendThroughWebOptions": {
+			"id": "SendThroughWebOptions",
+			"properties": {
+				"fileUploadOptions": {
+					"description": "Controls various file upload options available on the send page",
+					"type": "FileUploadOptions",
+					"items": {
+						"$ref": "FileUploadOptions"
+					},
+					"required": false
+				}
+			}
+		},
+		"AgreementDocuments": {
+			"id": "AgreementDocuments",
+			"properties": {
+				"documents": {
+					"description": "A list of documents",
+					"type": "array",
+					"items": {
+						"$ref": "Document"
+					},
+					"required": true
+				},
+				"supportingDocuments": {
+					"description": "A list of supporting documents. This is returned only if there are any supporting document in the agreement",
+					"type": "array",
+					"items": {
+						"$ref": "SupportingDocument"
+					},
+					"required": false
+				}
+			}
+		},
+		"DocumentHistoryEvent": {
+			"id": "DocumentHistoryEvent",
+			"properties": {
+				"date": {
+					"description": "The date of the audit event",
+					"type": "date",
+					"required": true
+				},
+				"versionId": {
+					"description": "An ID which uniquely identifies the version of the document associated with this audit event",
+					"type": "string",
+					"required": true
+				},
+				"actingUserEmail": {
+					"description": "Email address of the user that initiated the event",
+					"type": "string",
+					"required": true
+				},
+				"description": {
+					"description": "A description of the audit event",
+					"type": "string",
+					"required": true
+				},
+				"comment": {
+					"description": "The event comment. For RECALLED or REJECTED, the reason given by the user that initiates the event. For DELEGATE or SHARE, the message from the acting user to the participant",
+					"type": "string",
+					"required": false
+				},
+				"actingUserIpAddress": {
+					"description": "The IP address of the user that initiated the event",
+					"type": "string",
+					"required": true
+				},
+				"participantEmail": {
+					"description": "Email address of the user that initiated the event",
+					"type": "string",
+					"required": true
+				},
+				"type": {
+					"description": "Type of agreement event",
+					"type": "string",
+					"required": true,
+					"enum": ["CREATED", "UPLOADED_BY_SENDER", "FAXED_BY_SENDER", "AGREEMENT_MODIFIED", "USER_ACK_AGREEMENT_MODIFIED", "PRESIGNED", "SIGNED", "WRITTEN_SIGNED", "ESIGNED", "DIGSIGNED", "APPROVED", "ACCEPTED", "DELIVERED", "FORM_FILLED", "OFFLINE_SYNC", "FAXIN_RECEIVED", "SIGNATURE_REQUESTED", "APPROVAL_REQUESTED", "ACCEPTANCE_REQUESTED", "ACKNOWLEDGEMENT_REQUESTED", "FORM_FILLING_REQUESTED", "RECALLED", "REJECTED", "EXPIRED", "EXPIRED_AUTOMATICALLY", "SHARED", "EMAIL_VIEWED", "AUTO_CANCELLED_CONVERSION_PROBLEM", "SIGNER_SUGGESTED_CHANGES", "SENDER_CREATED_NEW_REVISION", "PASSWORD_AUTHENTICATION_FAILED", "KBA_AUTHENTICATION_FAILED", "KBA_AUTHENTICATED", "WEB_IDENTITY_AUTHENTICATED", "WEB_IDENTITY_SPECIFIED", "EMAIL_BOUNCED", "WIDGET_ENABLED", "WIDGET_DISABLED", "DELEGATED", "AUTO_DELEGATED", "REPLACED_SIGNER", "VAULTED", "DOCUMENTS_DELETED", "OTHER"]
+				},
+				"synchronizationId": {
+					"description": "A unique identifier linking offline events to synchronization events (specified for offline signing events and synchronization events, else null)",
+					"type": "string",
+					"required": false
+				},
+				"vaultEventId": {
+					"description": "The identifier assigned by the vault provider for the vault event (if vaulted, otherwise null)",
+					"type": "string",
+					"required": false
+				},
+				"deviceLocation": {
+					"description": "Location of the device that created the event (This value may be null due to limited privileges)",
+					"type": "DeviceLocation",
+					"items": {
+						"$ref": "DeviceLocation"
+					},
+					"required": false
+				}
+			}
+		},
+		"AlternateParticipantResponse": {
+			"description": "A JSON that contains the id of the newly created alternate participant",
+			"id": "AlternateParticipantResponse",
+			"properties": {
+				"participantId": {
+					"description": "The unique identifier of the alternate participant",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"RequestFormField": {
+			"id": "RequestFormField",
+			"properties": {
+				"radioCheckType": {
+					"description": "The type of radio button (if field is radio button, identified by inputType). ",
+					"type": "string",
+					"required": false,
+					"enum": ["CIRCLE", "CHECK", "CROSS", "DIAMOND", "SQUARE", "STAR"]
+				},
+				"borderColor": {
+					"description": "Color of the border of the field in RGB or HEX format",
+					"type": "string",
+					"required": false
+				},
+				"formatData": {
+					"description": "The format of data in text field",
+					"type": "string",
+					"required": false
+				},
+				"hidden": {
+					"description": "true if the field is hidden, else false",
+					"type": "boolean",
+					"required": false
+				},
+				"maskingText": {
+					"description": "Text to mask the masked form field",
+					"type": "string",
+					"required": false
+				},
+				"regularExpression": {
+					"description": "Regular expression validation of the form field",
+					"type": "string",
+					"required": false
+				},
+				"defaultValue": {
+					"description": "Default value of the form field",
+					"type": "string",
+					"required": false
+				},
+				"masked": {
+					"description": "true if the input entered by the signer has to be masked (like password), false if it shouldn't be",
+					"type": "boolean",
+					"required": false
+				},
+				"specialErrMsg": {
+					"description": "Error message to be shown to the signer if filled value doesn't match the validations of the form field",
+					"type": "string",
+					"required": false
+				},
+				"minLength": {
+					"description": "Minimum length of the input text field in terms of no. of characters",
+					"type": "integer",
+					"required": false
+				},
+				"calculatedExpression": {
+					"description": "Expression to calculate value of the form field",
+					"type": "string",
+					"required": false
+				},
+				"showOrHide": {
+					"description": "Action to show/hide the form field is to be taken on the basis of evaluation of conditions.",
+					"type": "string",
+					"required": false,
+					"enum": ["SHOW", "HIDE", "DISABLE", "ENABLE"]
+				},
+				"tooltip": {
+					"description": "Text that appears while hovering over the field",
+					"type": "string",
+					"required": false
+				},
+				"hiddenOptions": {
+					"description": "Text values which are hidden in a drop down form field",
+					"type": "array",
+					"items": {
+						"$ref": "string"
+					},
+					"required": false
+				},
+				"specialFormula": {
+					"description": "Formula used to calculate the value of the form field",
+					"type": "string",
+					"required": false
+				},
+				"required": {
+					"description": "true if it is a mandatory field to be filled by the signer, else false",
+					"type": "boolean",
+					"required": false
+				},
+				"maxNumberValue": {
+					"description": "Upper bound of the number that can be entered by the signer",
+					"type": "double",
+					"required": false
+				},
+				"borderWidth": {
+					"description": "Width of the border of the field in pixels",
+					"type": "float",
+					"required": false
+				},
+				"inputType": {
+					"description": "Input type of the form field",
+					"type": "string",
+					"required": false,
+					"enum": ["TEXT_FIELD", "MULTILINE", "PASSWORD", "RADIO", "CHECKBOX", "DROP_DOWN", "LISTBOX", "SIGNATURE", "PDF_SIGNATURE", "BUTTON", "BLOCK", "FILE_CHOOSER", "COMB", "UNSUPPORTED"]
+				},
+				"borderStyle": {
+					"description": "Style of the border of the field.",
+					"type": "string",
+					"required": false,
+					"enum": ["SOLID", "DASHED", "BEVELED", "INSET", "UNDERLINE"]
+				},
+				"contentType": {
+					"description": "Content Type of the form field.",
+					"type": "string",
+					"required": false,
+					"enum": ["DATA", "SIGNATURE_BLOCK", "SIGNATURE", "SIGNER_NAME", "SIGNER_FIRST_NAME", "SIGNER_LAST_NAME", "SIGNER_INITIALS", "SIGNER_EMAIL", "SIGNER_TITLE", "SIGNER_COMPANY", "SIGNATURE_DATE", "AGREEMENT_NAME", "AGREEMENT_MESSAGE", "TRANSACTION_ID", "SIGNATURE_STAMP", "CALC"]
+				},
+				"displayLabel": {
+					"description": "Display label attached to the field",
+					"type": "string",
+					"required": false
+				},
+				"backgroundColor": {
+					"description": "Background color of the form field in RGB or HEX format",
+					"type": "string",
+					"required": false
+				},
+				"displayFormatType": {
+					"description": "Format type of the text field. ",
+					"type": "string",
+					"required": false,
+					"enum": ["DEFAULT", "DATE", "NUMBER"]
+				},
+				"format": {
+					"description": "Format of the form field",
+					"type": "string",
+					"required": false,
+					"enum": ["CUSTOM", "DATE", "DATE_CUSTOM", "DATE_DD_MM_YY", "DATE_DD_MM_YYYY", "DATE_MM_DD_YY", "DATE_MM_DD_YYYY", "DATE_MM_YY", "EMAIL", "FORMULA", "MONEY", "MONEY_UK", "NONE", "NUMBER", "PERCENT", "PHONE", "PHONE_UK", "SOCIAL_SEC", "SPECIAL", "STRING", "STRING_ALPHA", "STRING_ALPHANUM", "STRING_NUM", "TIME", "XFA_PICTURE", "ZIP", "ZIP4", "ZIP_UK"]
+				},
+				"minNumberValue": {
+					"description": "Lower bound of the number that can be entered by the signer",
+					"type": "double",
+					"required": false
+				},
+				"displayFormat": {
+					"description": "Format of the value of the field to be displayed based on the displayFormatType property.",
+					"type": "string",
+					"required": false
+				},
+				"visibleOptions": {
+					"description": "Text values which are visible in a drop down form field",
+					"type": "array",
+					"items": {
+						"$ref": "string"
+					},
+					"required": false
+				},
+				"readOnly": {
+					"description": "true if it is a read-only field, else false",
+					"type": "boolean",
+					"required": false
+				},
+				"recipientIndex": {
+					"description": "Index of recipient, starting from 1, in recipients list passed in the request",
+					"type": "integer",
+					"required": false
+				},
+				"fontName": {
+					"description": "Font name of the form field",
+					"type": "string",
+					"required": false
+				},
+				"anyOrAll": {
+					"description": "It indicates if any one of the conditions or all of them have to be true.",
+					"type": "string",
+					"required": false,
+					"enum": ["ALL", "ANY"]
+				},
+				"name": {
+					"description": "The name of the form field",
+					"type": "string",
+					"required": true
+				},
+				"fontSize": {
+					"description": "Font size of the form field in points",
+					"type": "float",
+					"required": false
+				},
+				"locations": {
+					"description": "All locations in a document where the form field is placed",
+					"type": "array",
+					"items": {
+						"$ref": "FormFieldLocation"
+					},
+					"required": true
+				},
+				"alignment": {
+					"description": "Alignment of the text.",
+					"type": "string",
+					"required": false,
+					"enum": ["LEFT", "RIGHT", "CENTER"]
+				},
+				"conditions": {
+					"description": "Conditions to be evaluated which decides the visibility of the form field in association with showOrHide property",
+					"type": "array",
+					"items": {
+						"$ref": "FormFieldCondition"
+					},
+					"required": false
+				},
+				"fontColor": {
+					"description": "Font color of the form field in RGB or HEX format",
+					"type": "string",
+					"required": false
+				},
+				"maxLength": {
+					"description": "Maximum length of the input text field in terms of no. of characters",
+					"type": "integer",
+					"required": false
+				}
+			}
+		},
+		"UserAgreements": {
+			"id": "UserAgreements",
+			"properties": {
+				"userAgreementList": {
+					"description": "An array of UserAgreement items",
+					"type": "array",
+					"items": {
+						"$ref": "UserAgreement"
+					},
+					"required": true
+				}
+			}
+		},
+		"DisplayUserInfo": {
+			"id": "DisplayUserInfo",
+			"properties": {
+				"fullName": {
+					"description": "Displays the full name of the user, if available. ",
+					"type": "string",
+					"required": false
+				},
+				"company": {
+					"description": "Displays the name of the company of the user, if available",
+					"type": "string",
+					"required": false
+				},
+				"email": {
+					"description": "Displays the email of the user",
+					"type": "string",
+					"required": true
+				}
+			}
+		},
+		"DisplayUserSetInfo": {
+			"id": "DisplayUserSetInfo",
+			"properties": {
+				"displayUserSetMemberInfos": {
+					"description": "Displays the info about user set",
+					"type": "array",
+					"items": {
+						"$ref": "DisplayUserInfo"
+					},
+					"required": true
+				},
+				"displayUserSetName": {
+					"description": "The name of the display user set. Returned only, if the API caller is the sender of agreement. ",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"ParticipantSetInfo": {
+			"id": "ParticipantSetInfo",
+			"properties": {
+				"signingOrder": {
+					"description": "Index indicating sequential signing group (specified for hybrid routing)",
+					"type": "integer",
+					"required": false
+				},
+				"participantSetMemberInfos": {
+					"description": "Information about the members of the recipient set",
+					"type": "array",
+					"items": {
+						"$ref": "ParticipantInfo"
+					},
+					"required": true
+				},
+				"participantSetName": {
+					"description": "The name of the participant set. Returned only, if the API caller is the sender of agreement",
+					"type": "string",
+					"required": false
+				},
+				"roles": {
+					"description": "The current roles of the participant set. A participant set can have one or more roles",
+					"type": "array",
+					"items": {
+						"type": "string",
+						"enum": ["SENDER", "SIGNER", "APPROVER", "ACCEPTOR", "FORM_FILLER", "CERTIFIED_RECIPIENT", "DELEGATE_TO_SIGNER", "DELEGATE_TO_APPROVER", "DELEGATE_TO_ACCEPTOR", "DELEGATE_TO_FORM_FILLER", "DELEGATE_TO_CERTIFIED_RECIPIENT", "CC", "DELEGATE", "SHARE", "OTHER"]
+					},
+					"required": true
+				},
+				"privateMessage": {
+					"description": "Private message for the participants in the set",
+					"type": "string",
+					"required": false
+				},
+				"participantSetId": {
+					"description": "The unique identifier of the participant set",
+					"type": "string",
+					"required": true
+				},
+				"securityOptions": {
+					"description": "Security options that apply to the participant",
+					"type": "array",
+					"items": {
+						"type": "string",
+						"enum": ["PASSWORD", "WEB_IDENTITY", "KBA", "PHONE", "OTHER"]
+					},
+					"required": false
+				},
+				"status": {
+					"description": "The status of the participant set with respect to the document",
+					"type": "string",
+					"required": true,
+					"enum": ["WAITING_FOR_MY_SIGNATURE", "WAITING_FOR_MY_APPROVAL", "WAITING_FOR_MY_ACCEPTANCE", "WAITING_FOR_MY_ACKNOWLEDGEMENT", "WAITING_FOR_MY_FORM_FILLING", "WAITING_FOR_MY_DELEGATION", "OUT_FOR_SIGNATURE", "SIGNED", "APPROVED", "ACCEPTED", "DELIVERED", "FORM_FILLED", "RECALLED", "HIDDEN", "NOT_YET_VISIBLE", "WAITING_FOR_FAXIN", "ARCHIVED", "UNKNOWN", "PARTIAL", "FORM", "WAITING_FOR_AUTHORING", "OUT_FOR_APPROVAL", "OUT_FOR_ACCEPTANCE", "OUT_FOR_DELIVERY", "OUT_FOR_FORM_FILLING", "WIDGET", "EXPIRED", "WAITING_FOR_MY_REVIEW", "IN_REVIEW", "OTHER"]
+				}
+			}
+		},
+		"RecipientSetInfo": {
+			"id": "RecipientSetInfo",
+			"properties": {
+				"recipientSetRole": {
+					"description": "Specify the role of recipient set. The possible values are <br>SIGNER (enum): Recipients marked as signers need to sign the document. They may be required to enter data into fields. <br>APPROVER (enum): Recipients marked as approvers review and approve the document but they are not required to sign it. They may be required to enter data into fields.<br>ACCEPTOR (enum): Recipients marked as acceptors are required to accept the document. They may be required to enter data into fields.<br>FORM_FILLER (enum): Recipients marked as form fillers are required to enter data into the form fields and submit the document.<br>CERTIFIED_RECIPIENT (enum): Recipients marked as certified recipient are required to view and acknowledge the receipt of the document.<br>Delegators: Recipients marked as delegators may review the document but can\u2019t sign, approve, accept or acknowledge it. They need to forward the document to another user who may take the appropriate action.",
+					"type": "string",
+					"required": true,
+					"enum": ["SIGNER", "APPROVER", "ACCEPTOR", "FORM_FILLER", "CERTIFIED_RECIPIENT", "DELEGATE_TO_SIGNER", "DELEGATE_TO_APPROVER", "DELEGATE_TO_ACCEPTOR", "DELEGATE_TO_FORM_FILLER", "DELEGATE_TO_CERTIFIED_RECIPIENT"]
+				},
+				"signingOrder": {
+					"description": "Index indicating sequential signing group (specify for hybrid routing)",
+					"type": "integer",
+					"required": false
+				},
+				"recipientSetName": {
+					"description": "Specify the name of Recipient set. Maximum no of characters in recipient set name is restricted to 255.",
+					"type": "string",
+					"required": false
+				},
+				"recipientSetMemberInfos": {
+					"description": "Information about the members of the recipient set",
+					"type": "array",
+					"items": {
+						"$ref": "RecipientInfo"
+					},
+					"required": true
+				},
+				"privateMessage": {
+					"description": "Private message for the recipients in the set",
+					"type": "string",
+					"required": false
+				},
+				"securityOptions": {
+					"description": "Security options that apply to the recipient",
+					"type": "array",
+					"items": {
+						"$ref": "RecipientSecurityOption"
+					},
+					"required": false
+				}
+			}
+		},
+		"SigningUrlSetInfo": {
+			"id": "SigningUrlSetInfo",
+			"properties": {
+				"signingUrls": {
+					"description": "An array of urls for current signer set.",
+					"type": "array",
+					"items": {
+						"$ref": "SigningUrl"
+					},
+					"required": true
+				},
+				"signingUrlSetName": {
+					"description": "The name of the current signer set. Returned only, if the API caller is the sender of agreement",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"DocumentImageUrls": {
+			"id": "DocumentImageUrls",
+			"properties": {
+				"documentsImageUrls": {
+					"description": "A list of documents image URLs.",
+					"type": "array",
+					"items": {
+						"$ref": "DocumentImageUrl"
+					},
+					"required": true
+				},
+				"supportingDocumentsImageUrls": {
+					"description": "A list of supporting document image URLs.",
+					"type": "array",
+					"items": {
+						"$ref": "DocumentImageUrl"
+					},
+					"required": false
+				}
+			}
+		},
+		"DocumentImageUrl": {
+			"id": "DocumentImageUrl",
+			"properties": {
+				"imageUrls": {
+					"description": "A list of objects representing all image URLs.(one per imagesize).",
+					"type": "array",
+					"items": {
+						"$ref": "ImageUrl"
+					},
+					"required": true
+				}
+			}
+		},
+		"AgreementCreationInfo": {
+			"id": "AgreementCreationInfo",
+			"properties": {
+				"documentCreationInfo": {
+					"description": "Information about the document you want to send",
+					"type": "DocumentCreationInfo",
+					"items": {
+						"$ref": "DocumentCreationInfo"
+					},
+					"required": true
+				},
+				"options": {
+					"description": "Options for authoring and sending the agreement",
+					"type": "InteractiveOptions",
+					"items": {
+						"$ref": "InteractiveOptions"
+					},
+					"required": false
+				}
+			}
+		},
+		"URLFileInfo": {
+			"id": "URLFileInfo",
+			"properties": {
+				"name": {
+					"description": "The original system file name of the document being sent - used to name attachments, and to infer the mime type if one is not explicitly specified",
+					"type": "string",
+					"required": false
+				},
+				"mimeType": {
+					"description": "The mime type of the referenced file, used to determine if the file can be accepted and the necessary conversion steps can be performed",
+					"type": "string",
+					"required": false
+				},
+				"url": {
+					"description": "A publicly accessible URL for retrieving the raw file content. HTTP authentication is supported using standard embedded syntax - i.e. http://username:password@your.server.com/path/to/file.",
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"RecipientInfo": {
+			"id": "RecipientInfo",
+			"properties": {
+				"fax": {
+					"description": "Fax of the recipient. This is required if email is not provided. Both fax and email can not be provided. In case of recipient set having more than one member, fax is not allowed",
+					"type": "string",
+					"required": false
+				},
+				"securityOptions": {
+					"description": "Security options that apply to the recipient",
+					"type": "array",
+					"items": {
+						"$ref": "RecipientSecurityOption"
+					},
+					"required": false
+				},
+				"email": {
+					"description": "Email of the recipient. This is required if fax is not provided. Both fax and email can not be provided",
+					"showInSampleRequest": true,
+					"type": "string",
+					"required": false
+				}
+			}
+		},
+		"DocumentPageInfo": {
+			"id": "DocumentPageInfo",
+			"properties": {
+				"pageNumber": {
+					"description": "Number of the page in combined document starting from 1.",
+					"type": "int",
+					"required": true
+				},
+				"rotation": {
+					"description": "Rotation angle of the page in clockwise direction in degree",
+					"type": "double",
+					"required": true
+				},
+				"width": {
+					"description": "Width of the page",
+					"type": "double",
+					"required": true
+				},
+				"height": {
+					"description": "Height of the page",
+					"type": "double",
+					"required": true
+				}
+			}
+		}
+	},
+	"apiVersion": "5.0.0",
+	"swaggerVersion": "1.2",
+	"basePath": "https://secure.na1.echocdn.com/api/rest/v5",
+	"apis": [{
+		"path": "/agreements",
+		"operations": [{
+			"summary": "Creates an agreement. Sends it out for signatures, and returns the agreementID in the response to the client.",
+			"notes": null,
+			"nickname": "createAgreement",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_send",
+					"description": "If both authoringRequested and sendThroughWeb parameter are set to false"
+				}, {
+					"scope": "agreement_write",
+					"description": "If any of the authoringRequested or sendThroughWeb parameter is set to true"
+				}, {
+					"scope": "user_login",
+					"description": "Required additionally if the autoLoginUser parameter is set to true"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "AUTH_ONLY_APPLICABLE_TO_EMAIL: Auth method can only be applied to email ids.",
+				"code": "400"
+			}, {
+				"reason": "AUTH_METHOD_PROVIDED_MORE_THAN_ONCE: Auth method has been provided more than once.",
+				"code": "400"
+			}, {
+				"reason": "BAD_REQUEST: The request provided is invalid.",
+				"code": "400"
+			}, {
+				"reason": "EMPTY_REDIRECT_URL: If PostSignOptions are specified, the redirectUrl must not be empty.",
+				"code": "400"
+			}, {
+				"reason": "EXTERNAL_AUTH_METHOD_PROVIDED_MORE_THAN_ONCE: External auth method has been provided more than once.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_ARGUMENTS: One or more arguments to the method are invalid.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_EMAIL: Email provided is invalid.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_FILE_INFO: Invalid or no file info is provided.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_JSON: An invalid JSON was specified.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_REDIRECT_DELAY: The redirectDelay specified in PostSignOptions must be nonnegative integer.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_REDIRECT_URL: The redirectUrl specified in PostSignOptions is not a valid URL.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_SIGNING_ORDER: Signing order of recipient sets defines an invalid range.",
+				"code": "400"
+			}, {
+				"reason": "EXTRA_SIGNATURE_FLOW: Signature Flow cannot be specified in hybrid routing.",
+				"code": "400"
+			}, {
+				"reason": "INTERNAL_AUTH_METHOD_PROVIDED_MORE_THAN_ONCE: Internal auth method has been provided more than once.",
+				"code": "400"
+			}, {
+				"reason": "MISC_ERROR: Some miscellaneous error has occurred.",
+				"code": "400"
+			}, {
+				"reason": "MISSING_REQUIRED_PARAM: Required parameters are missing.",
+				"code": "400"
+			}, {
+				"reason": "AUTOLOGIN_DENIED: User settings do not permit autologin as requested.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_USER: Invalid user ID or email provided in x-user header.",
+				"code": "401"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "NOT_AUTHORIZED_FOR_TRANSIENT_RESOURCE: Not authorized for the transient resource referred in the request.",
+				"code": "401"
+			}, {
+				"reason": "UNAUTHORIZED: You cannot work on behalf of this user.",
+				"code": "401"
+			}, {
+				"reason": "UNVERIFIED_USER: The user has registered but has not verified their email address. The user must use the Adobe Sign web site to complete verification.",
+				"code": "401"
+			}, {
+				"reason": "API_TERMS_NOT_ACCEPTED: Your account is locked because an administrator has not agreed to Adobe Sign's Terms of Use. Please contact your account administrator to activate your account.",
+				"code": "403"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "SIGNER_AUTH_NOT_ALLOWED: User settings do not permit signer auth specification.",
+				"code": "403"
+			}, {
+				"reason": "INTERNAL_SIGNER_AUTH_NOT_ALLOWED: User settings do not permit internal signer auth.",
+				"code": "403"
+			}, {
+				"reason": "PER_SIGNER_AUTH_NOT_ALLOWED: User settings do not permit per signer auth.",
+				"code": "403"
+			}, {
+				"reason": "AUTH_METHOD_PROVIDED_IS_NOT_ALLOWED: Auth method provided is not allowed.",
+				"code": "403"
+			}, {
+				"reason": "INTERNAL_AUTH_METHOD_PROVIDED_IS_NOT_ALLOWED: Internal auth method provided is not allowed.",
+				"code": "403"
+			}, {
+				"reason": "EXTERNAL_AUTH_METHOD_PROVIDED_IS_NOT_ALLOWED: External auth method provided is not allowed.",
+				"code": "403"
+			}, {
+				"reason": "SIGNED_DOCUMENT_PASSWORD_PROTECTION_NOT_ALLOWED: Password protection for signed document is not allowed.",
+				"code": "403"
+			}, {
+				"reason": "HYBRID_ROUTING_NOT_ALLOWED: Hybrid routing is not enabled for this user.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_LIBRARYDOCUMENT_ID: The Library Document ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_LIBRARYDOCUMENT_NAME: The Library Document name specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_TRANSIENTDOCUMENT_ID: The Transient Document ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "TRANSIENT_RESOURCE_DELETED: Transient Resource deleted from the server.",
+				"code": "404"
+			}, {
+				"reason": "PRIVATE_MESSAGES_NOT_ENABLED: Sending private messages to recipients is not enabled for this user.",
+				"code": "403"
+			}, {
+				"reason": "URL_INVALID: Provided document URL is invalid.",
+				"code": "400"
+			}, {
+				"reason": "SEND_LIMIT_EXCEEDED: Agreement creation quota of the user is exhausted.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_NUMBER_OF_PAYMENT_FIELDS: Some participants have more than one payment field.",
+				"code": "400"
+			}, {
+				"reason": "PAYMENT_INTEGRATION_DISABLED: Request has payment fields, but payment feature is disabled.",
+				"code": "403"
+			}],
+			"httpMethod": "POST",
+			"type": "AgreementCreationResponse",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_send')\" oncontextmenu=\"this.href=oauthDoc('agreement_send')\" target=\"oauthDoc\">agreement_send<\/a> - If both authoringRequested and sendThroughWeb parameter are set to false<\/li><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_write')\" oncontextmenu=\"this.href=oauthDoc('agreement_write')\" target=\"oauthDoc\">agreement_write<\/a> - If any of the authoringRequested or sendThroughWeb parameter is set to true<\/li><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('user_login')\" oncontextmenu=\"this.href=oauthDoc('user_login')\" target=\"oauthDoc\">user_login<\/a> - Required additionally if the autoLoginUser parameter is set to true<\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "body",
+				"name": "AgreementCreationInfo",
+				"description": "Information about the agreement that you want to send and authoring options that you want to apply at the time of sending.",
+				"type": "AgreementCreationInfo",
+				"required": true
+			}],
+			"order": 4
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/participantSets/{participantSetId}/participants/{participantId}/alternateParticipants",
+		"operations": [{
+			"summary": "Creates a new alternate participant",
+			"notes": null,
+			"nickname": "createAlternateParticipant",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_write"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "MISC_ERROR: Some miscellaneous error has occurred.",
+				"code": "400"
+			}, {
+				"reason": "BAD_REQUEST: The request provided is invalid.",
+				"code": "400"
+			}, {
+				"reason": "ALTERNATE_PARTICIPANT_ADDITION_NOT_ALLOWED: User cannot add an alternate participant with the specified email address.",
+				"code": "400"
+			}, {
+				"reason": "ALTERNATE_PARTICIPANT_ADDITION_SELF_NOT_ALLOWED: You cannot add yourself as an alternate participant.",
+				"code": "400"
+			}, {
+				"reason": "ALTERNATE_PARTICIPANT_ADDITION_ORIGINATOR_NOT_ALLOWED: You cannot add the sender as an alternate participant.",
+				"code": "400"
+			}, {
+				"reason": "ALTERNATE_PARTICIPANT_ADDITION_SIGNATORY_NOT_ALLOWED: You cannot add an existing participant of this agreement as an alternate participant.",
+				"code": "400"
+			}, {
+				"reason": "ALTERNATE_PARTICIPANT_ADDITION_PROHIBITED_BY_SETTINGS: Settings prohibit the addition of this individual as an alternate participant.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_X_API_USER_HEADER: Value provided in x-api-user header is in invalid format.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_JSON: An invalid JSON was specified.",
+				"code": "400"
+			}, {
+				"reason": "MISSING_REQUIRED_PARAM: Required parameters are missing.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "API_TERMS_NOT_ACCEPTED: Your account is locked because an administrator has not agreed to Adobe Sign's Terms of Use. Please contact your account administrator to activate your account.",
+				"code": "403"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_PARTICIPANT_ID: The participant ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_PARTICIPANT_SET_ID: The participant set ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_EMAIL: Email provided is invalid.",
+				"code": "400"
+			}, {
+				"reason": "EMPTY_PRIVATE_MESSAGE: The message specified for the alternate participant addition cannot be empty.",
+				"code": "400"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_MODIFICATION_NOT_ACKNOWLEDGED: The agreement has been modified by the sender. Please get the latest version.",
+				"code": "409"
+			}],
+			"httpMethod": "POST",
+			"type": "AlternateParticipantResponse",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_write')\" oncontextmenu=\"this.href=oauthDoc('agreement_write')\" target=\"oauthDoc\">agreement_write<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "path",
+				"name": "participantSetId",
+				"description": "The participant set identifier",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "path",
+				"name": "participantId",
+				"description": "The participant identifier",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "body",
+				"name": "AlternateParticipantInfo",
+				"description": "Information about the alternate participant",
+				"type": "AlternateParticipantInfo",
+				"required": true
+			}],
+			"order": 7
+		}]
+	}, {
+		"path": "/agreements",
+		"operations": [{
+			"summary": "Retrieves agreements for the user.",
+			"notes": null,
+			"nickname": "getAgreements",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "EMPTY_EXTERNALID_PARAMETER: ExternalId parameter can not be empty.",
+				"code": "400"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_USER: Invalid user ID or email provided in x-user header.",
+				"code": "401"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "SERVICE_UNAVAILABLE: Service seems to be unavailable. Please try after some time.",
+				"code": "503"
+			}],
+			"httpMethod": "GET",
+			"type": "UserAgreements",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "query",
+				"description": "The query string used for the search. Multiple search terms can be provided, separated by spaces. Some of the search terms include document name, participant name or company, and form data",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "externalId",
+				"description": "Case-sensitive ExternalID for which you would like to retrieve agreement information. ExternalId is passed in the call to the agreement creation API",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "externalGroup",
+				"description": "ExternalGroup for which you would like to retrieve agreement information. ExternalGroup is passed in the call to the agreement creation API. You must pass ExternalId if passing ExternalGroup parameter",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "externalNamespace",
+				"description": "ExternalNameSpace for which you would like to retrieve agreement information. ExternalNameSpace is passed in the call to the agreement creation API. You must pass ExternalId if passing ExternalNameSpace parameter",
+				"type": "string",
+				"required": false
+			}],
+			"order": 12
+		}]
+	}, {
+		"path": "/agreements/{agreementId}",
+		"operations": [{
+			"summary": "Retrieves the latest status of an agreement.",
+			"notes": null,
+			"nickname": "getAgreementInfo",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "AgreementInfo",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}],
+			"order": 13
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/auditTrail",
+		"operations": [{
+			"summary": "Retrieves the audit trail of an agreement identified by agreementid.",
+			"notes": "PDF file stream containing audit trail information",
+			"format": "binary",
+			"nickname": "getAuditTrail",
+			"produces": ["   */*   "],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "string",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}],
+			"order": 14
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/combinedDocument",
+		"operations": [{
+			"summary": "Gets a single combined PDF document for the documents associated with an agreement.",
+			"notes": "A File Stream of combined PDF document",
+			"format": "binary",
+			"nickname": "getCombinedDocument",
+			"produces": ["   */*   "],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_VERSION_ID: The Version ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_PARTICIPANT: The participant email specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_REMOVED: The agreement has been removed from the system.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_AVAILABLE: The agreement is not yet available or will have no pages to view.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_EXPOSED: The agreement has not yet been exposed to the requested participant.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "string",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "query",
+				"name": "versionId",
+				"description": "The version identifier of agreement as provided by the API which retrieves information of a specific agreement. If not provided then latest version will be used.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "participantEmail",
+				"description": "The email address of the participant to be used to retrieve documents.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "attachSupportingDocuments",
+				"description": "When set to true, attach corresponding supporting documents to the signed agreement PDF. Default value of this parameter is true.",
+				"type": "boolean",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "auditReport",
+				"description": "When set to true, attach an audit report to the signed agreement PDF. Default value is false",
+				"type": "boolean",
+				"required": false
+			}],
+			"order": 16
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/combinedDocument/pagesInfo",
+		"operations": [{
+			"summary": "Retrieves info of all pages of a combined PDF document for the documents associated with an agreement.",
+			"notes": null,
+			"nickname": "getCombinedDocumentPagesInfo",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "MISC_ERROR: Some miscellaneous error has occurred.",
+				"code": "400"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "API_TERMS_NOT_ACCEPTED: Your account is locked because an administrator has not agreed to Adobe Sign's Terms of Use. Please contact your account administrator to activate your account.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "CombinedDocumentPagesInfo",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "query",
+				"name": "includeSupportingDocumentsPagesInfo",
+				"description": "When set to true, returns info of all pages of supporting documents as well. Else, return the info of pages of only the original document.",
+				"type": "boolean",
+				"required": false
+			}],
+			"order": 18
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/combinedDocument/url",
+		"operations": [{
+			"summary": "Retrieves url of all visible pages of all the documents associated with an agreement.",
+			"notes": null,
+			"nickname": "getCombinedDocumentUrl",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "MISC_ERROR: Some miscellaneous error has occurred.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "API_TERMS_NOT_ACCEPTED: Your account is locked because an administrator has not agreed to Adobe Sign's Terms of Use. Please contact your account administrator to activate your account.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_VERSION_ID: The Version ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_PARTICIPANT: The participant email specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_EXPOSED: The agreement has not yet been exposed to the requested participant.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_AVAILABLE: The agreement is not yet available or will have no pages to view.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_REMOVED: The agreement has been removed from the system.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "DocumentUrl",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "query",
+				"name": "versionId",
+				"description": "The version identifier of agreement as provided by the API which retrieves information of a specific agreement. If not provided then latest version will be used.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "participantEmail",
+				"description": "The email address of the participant to be used to retrieve its document url.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "attachSupportingDocuments",
+				"description": "When set to true, attach corresponding supporting documents to the signed agreement PDF. Default value of this parameter is true.",
+				"type": "boolean",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "auditReport",
+				"description": "When set to true, attach an audit report to the signed agreement PDF. Default value is false",
+				"type": "boolean",
+				"required": false
+			}],
+			"order": 19
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/documents",
+		"operations": [{
+			"summary": "Retrieves the IDs of all the main and supporting documents of an agreement identified by agreementid.",
+			"notes": null,
+			"nickname": "getAllDocuments",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "DOCUMENT_ORIGINAL_FORMAT_NOT_ALLOWED: The documents in original format are not enabled for this user.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_VERSION_ID: The Version ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_PARTICIPANT: The participant email specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_REMOVED: The agreement has been removed from the system.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_AVAILABLE: The agreement is not yet available or will have no pages to view.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_EXPOSED: The agreement has not yet been exposed to the requested participant.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_SUPPORTING_DOCUMENT_CONTENT_FORMAT: The supporting document content format is invalid.",
+				"code": "400"
+			}],
+			"httpMethod": "GET",
+			"type": "AgreementDocuments",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "query",
+				"name": "versionId",
+				"description": "The version identifier of agreement as provided by the API which retrieves information of a specific agreement. If not provided then latest version will be used.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "participantEmail",
+				"description": "The email address of the participant to be used to retrieve documents.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "supportingDocumentContentFormat",
+				"description": "Content format of the supported documents. It can have two possible values ORIGINAL or CONVERTED_PDF.",
+				"type": "string",
+				"required": false,
+				"enum": ["ORIGINAL", "CONVERTED_PDF"]
+			}],
+			"order": 21
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/documents/imageUrls",
+		"operations": [{
+			"summary": "Retrieves image urls of all visible pages of all the documents associated with an agreement.",
+			"notes": null,
+			"nickname": "getAllDocumentsImageUrls",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "INVALID_IMAGE_SIZE: Must provide a comma separated list of valid image sizes.",
+				"code": "400"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_REMOVED: The agreement has been removed from the system.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_AVAILABLE: The agreement is not yet available or will have no pages to view.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_EXPOSED: The agreement has not yet been exposed to the requested participant.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_VERSION_ID: The Version ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_PARTICIPANT: The participant email specified is invalid.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "DocumentImageUrls",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "query",
+				"name": "versionId",
+				"description": "The version identifier of agreement as provided by the API which retrieves information of a specific agreement. If not provided then latest version will be used.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "participantEmail",
+				"description": "The email address of the participant to be used to retrieve its visible document pages' image urls.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "imageSizes",
+				"description": "A comma separated list of image sizes i.e. {FIXED_WIDTH_50px, FIXED_WIDTH_250px, FIXED_WIDTH_675px, ZOOM_50_PERCENT, ZOOM_75_PERCENT, ZOOM_100_PERCENT, ZOOM_125_PERCENT, ZOOM_150_PERCENT, ZOOM_200_PERCENT}. Default sizes returned are {FIXED_WIDTH_50px, FIXED_WIDTH_250px, FIXED_WIDTH_675px, ZOOM_100_PERCENT}. ",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "includeSupportingDocumentsImageUrls",
+				"description": "When set to true, returns image urls of supporting documents as well. Else, returns image urls of only the original documents.",
+				"type": "boolean",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "showImageAvailabilityOnly",
+				"description": "When set to true, returns only image availability. Else, returns both image urls and its availability.",
+				"type": "boolean",
+				"required": false
+			}],
+			"order": 22
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/documents/{documentId}",
+		"operations": [{
+			"summary": "Retrieves the file stream of a document of an agreement.",
+			"notes": "Raw stream of the file",
+			"format": "binary",
+			"nickname": "getDocument",
+			"produces": ["   */*   "],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_REMOVED: The agreement has been removed from the system.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_AVAILABLE: The agreement is not yet available or will have no pages to view.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_EXPOSED: The agreement has not yet been exposed to the requested participant.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_DOCUMENT_ID: The Document ID specified is invalid.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "string",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "path",
+				"name": "documentId",
+				"description": "The document identifier, as retrieved from the API which fetches the documents of a specified agreement",
+				"type": "string",
+				"required": true
+			}],
+			"order": 23
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/documents/{documentId}/imageUrls",
+		"operations": [{
+			"summary": "Retrieves image urls of all visible pages of a document associated with an agreement.",
+			"notes": null,
+			"nickname": "getDocumentImageUrls",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "INVALID_ARGUMENTS: One or more arguments to the method are invalid.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_IMAGE_SIZE: Must provide a comma separated list of valid image sizes.",
+				"code": "400"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_REMOVED: The agreement has been removed from the system.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_AVAILABLE: The agreement is not yet available or will have no pages to view.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_VERSION_ID: The Version ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_PARTICIPANT: The participant email specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_DOCUMENT_ID: The Document ID specified is invalid.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "DocumentImageUrl",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "path",
+				"name": "documentId",
+				"description": "The document identifier, as retrieved from the API which fetches the documents of a specified agreement",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "query",
+				"name": "versionId",
+				"description": "The version identifier of agreement as provided by the API which retrieves information of a specific agreement. If not provided then latest version will be used.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "participantEmail",
+				"description": "The email address of the participant to be used to retrieve its visible document pages' image urls.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "imageSizes",
+				"description": "A comma separated list of image sizes i.e. {FIXED_WIDTH_50px, FIXED_WIDTH_250px, FIXED_WIDTH_675px, ZOOM_50_PERCENT, ZOOM_75_PERCENT, ZOOM_100_PERCENT, ZOOM_125_PERCENT, ZOOM_150_PERCENT, ZOOM_200_PERCENT}. Default sizes returned are {FIXED_WIDTH_50px, FIXED_WIDTH_250px, FIXED_WIDTH_675px, ZOOM_100_PERCENT}. ",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "showImageAvailabilityOnly",
+				"description": "When set to true, returns only image availability. Else, returns both image urls and its availability.",
+				"type": "boolean",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "startPage",
+				"description": "Start of page number range for which imageUrls are requested. Starting page number should be greater than 0.",
+				"type": "integer",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "endPage",
+				"description": "End of page number range for which imageUrls are requested.",
+				"type": "integer",
+				"required": false
+			}],
+			"order": 25
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/documents/{documentId}/url",
+		"operations": [{
+			"summary": "Retrieves the url of the document",
+			"notes": null,
+			"nickname": "getDocumentUrl",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "MISC_ERROR: Some miscellaneous error has occurred.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_DOCUMENT_ID: The Document ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_VERSION_ID: The Version ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "INVALID_PARTICIPANT: The participant email specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_EXPOSED: The agreement has not yet been exposed to the requested participant.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_AVAILABLE: The agreement is not yet available or will have no pages to view.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_REMOVED: The agreement has been removed from the system.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "DocumentUrl",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "path",
+				"name": "documentId",
+				"description": "The document identifier, as retrieved from the API which fetches the documents of a specified agreement",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "query",
+				"name": "versionId",
+				"description": "The version identifier of agreement as provided by the API which retrieves information of a specific agreement. If not provided then latest version will be used.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "query",
+				"name": "participantEmail",
+				"description": "The email address of the participant to be used to retrieve its document url.",
+				"type": "string",
+				"required": false
+			}],
+			"order": 26
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/formData",
+		"operations": [{
+			"summary": "Retrieves data entered by the user into interactive form fields at the time they signed the agreement",
+			"notes": "CSV file stream containing form data information",
+			"format": "binary",
+			"nickname": "getFormData",
+			"produces": ["text/csv"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_read"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "PERMISSION_DENIED: The API caller does not have the permission to execute this operation.",
+				"code": "403"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}, {
+				"reason": "NO_FORM_DATA: There is no form data available.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "string",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_read')\" oncontextmenu=\"this.href=oauthDoc('agreement_read')\" target=\"oauthDoc\">agreement_read<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}],
+			"order": 28
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/signingUrls",
+		"operations": [{
+			"summary": "Retrieves the URL for the e-sign page for the current signer(s) of an agreement.",
+			"notes": null,
+			"nickname": "getSigningUrl",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_write"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_DELETED: The agreement has been deleted.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_SIGNABLE: The agreement is not currently waiting for anyone to sign it.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_VISIBLE: The agreement is not visible to this user for signing.",
+				"code": "404"
+			}, {
+				"reason": "AGREEMENT_NOT_EXPOSED: The agreement has not yet been exposed to the requested participant.",
+				"code": "404"
+			}],
+			"httpMethod": "GET",
+			"type": "SigningUrlResponse",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_write')\" oncontextmenu=\"this.href=oauthDoc('agreement_write')\" target=\"oauthDoc\">agreement_write<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}],
+			"order": 38
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/status",
+		"operations": [{
+			"summary": "Cancels an agreement.",
+			"notes": null,
+			"nickname": "updateStatus",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_write"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "INVALID_JSON: An invalid JSON was specified.",
+				"code": "400"
+			}, {
+				"reason": "MISC_ERROR: Some miscellaneous error has occurred.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_ARGUMENTS: One or more arguments to the method are invalid.",
+				"code": "400"
+			}, {
+				"reason": "MUST_PROVIDE_VALID_AGREEMENT_STATUS: Must provide a valid agreement status.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_AGREEMENT_STATUS: Agreement state can not be updated to the provided status.",
+				"code": "400"
+			}, {
+				"reason": "INVALID_COMMENT: An invalid comment was specified while cancelling agreement.",
+				"code": "400"
+			}, {
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_API_KEY: API_KEY provided is invalid.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_USER_CREDENTIALS: Invalid user credentials.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_DOCUMENT_KEY: Invalid Document Key.",
+				"code": "404"
+			}],
+			"httpMethod": "PUT",
+			"type": "AgreementStatusUpdateResponse",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_write')\" oncontextmenu=\"this.href=oauthDoc('agreement_write')\" target=\"oauthDoc\">agreement_write<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "body",
+				"name": "AgreementStatusUpdateInfo",
+				"description": "Agreement status update information object.",
+				"type": "AgreementStatusUpdateInfo",
+				"required": true
+			}],
+			"order": 55
+		}]
+	}, {
+		"path": "/agreements/{agreementId}",
+		"operations": [{
+			"summary": "Deletes an agreement. Agreement will no longer be visible in the Manage Page of the user.",
+			"notes": null,
+			"nickname": "deleteAgreement",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_retention"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "DOCUMENT_HAS_BEEN_REMOVED: The document has already been removed.",
+				"code": "404"
+			}, {
+				"reason": "DYNAMIC_DOCUMENT_EXPIRATION_NOT_ENABLED: The operation requires some account settings to be enabled. Please contact the Adobe Sign team to enable the settings.",
+				"code": "412"
+			}, {
+				"reason": "REMOVE_FAILED: The system failed to remove the Document.",
+				"code": "500"
+			}],
+			"httpMethod": "DELETE",
+			"type": "void",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_retention')\" oncontextmenu=\"this.href=oauthDoc('agreement_retention')\" target=\"oauthDoc\">agreement_retention<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}],
+			"order": 56
+		}]
+	}, {
+		"path": "/agreements/{agreementId}/documents",
+		"operations": [{
+			"summary": "Deletes all the documents of an agreement. Agreement will be visible in the Manage Page of the user.",
+			"notes": null,
+			"nickname": "deleteDocuments",
+			"produces": ["application/json"],
+			"authorizations": {
+				"oauth2": [{
+					"scope": "agreement_retention"
+				}]
+			},
+			"errorResponses": [{
+				"reason": "NO_ACCESS_TOKEN_HEADER: Access token header not provided.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_ACCESS_TOKEN: Access token provided is invalid or has expired.",
+				"code": "401"
+			}, {
+				"reason": "INVALID_AGREEMENT_ID: The Agreement ID specified is invalid.",
+				"code": "404"
+			}, {
+				"reason": "DOCUMENT_HAS_BEEN_REMOVED: The document has already been removed.",
+				"code": "404"
+			}, {
+				"reason": "DYNAMIC_DOCUMENT_EXPIRATION_NOT_ENABLED: The operation requires some account settings to be enabled. Please contact the Adobe Sign team to enable the settings.",
+				"code": "412"
+			}, {
+				"reason": "REMOVE_FAILED: The system failed to remove the Document.",
+				"code": "500"
+			}],
+			"httpMethod": "DELETE",
+			"type": "void",
+			"parameters": [{
+				"paramType": "header",
+				"name": "Access-Token",
+				"description": "An <a href=\"#\" onclick=\"this.href=oauthDoc()\" oncontextmenu=\"this.href=oauthDoc()\" target=\"oauthDoc\">OAuth Access Token<\/a> with scopes:<ul><li style='list-style-type: square'><a href=\"#\" onclick=\"this.href=oauthDoc('agreement_retention')\" oncontextmenu=\"this.href=oauthDoc('agreement_retention')\" target=\"oauthDoc\">agreement_retention<\/a><\/li><\/ul>",
+				"type": "string",
+				"required": true
+			}, {
+				"paramType": "header",
+				"name": "x-api-user",
+				"description": "The userId or email of API caller using the account or group token in the format <b>userid:{userId} OR email:{email}.<\/b> If it is not specified, then the caller is inferred from the token.",
+				"type": "string",
+				"required": false
+			}, {
+				"paramType": "path",
+				"name": "agreementId",
+				"description": "The agreement identifier, as returned by the agreement creation API or retrieved from the API to fetch agreements.",
+				"type": "string",
+				"required": true
+			}],
+			"order": 57
+		}]
+	}],
+	"resourcePath": "/agreements",
+	"produces": ["application/json", "application/pdf", "text/csv"]
+}
